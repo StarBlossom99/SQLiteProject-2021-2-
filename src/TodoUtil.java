@@ -129,7 +129,7 @@ public class TodoUtil {
 				t.set_is_completed(1);
 				t.setId(number);
 				System.out.println(t.toString());
-				if(l.updateItem(t)>0) {
+				if(l.completeItem(t)>0) {
 					System.out.println("해당 항목이 완료 처리되었습니다.\n");
 				}
 				
