@@ -1,5 +1,8 @@
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
+import com.google.gson.Gson;
 
 
 public class TodoMain {
@@ -94,5 +97,16 @@ public class TodoMain {
 	         if(isList) TodoUtil.listAll(l);
 	      } while (!quit);
 	      
+	      Gson gson = new Gson();
+	      String jsonstr = gson.toJson(l.getList());
+	      
+	      try {
+	    	  FileWriter writer = new FileWriter("21800777.txt");
+	    	  writer.write(jsonstr);
+	    	  writer.close();
+	    	  System.out.println("Json을 통해 파일에 저장되었습니다!");
+	      } catch (IOException e) {
+	    	  e.printStackTrace();
+	      }
 	}
 }
