@@ -108,9 +108,9 @@ public class TodoUtil {
 		}
 	}
 	
-	public static void listAll(TodoList l, int num) {
+	public static void list_compAll(TodoList l, int num) {
 		int count = 0;
-		for(TodoItem item : l.getList(num)) {
+		for(TodoItem item : l.get_compList(num)) {
 			System.out.println(item.toString());
 			count ++;
 		}
@@ -124,9 +124,10 @@ public class TodoUtil {
 				String new_desc = item.getDesc();
 				String new_category = item.getCategory();
 				String new_due_date = item.getDue_date();
-				
+				int is_imp = item.get_is_important();
 				TodoItem t = new TodoItem(new_title, new_desc, new_category, new_due_date);
 				t.set_is_completed(1);
+				t.set_is_important(is_imp);
 				t.setId(number);
 				System.out.println(t.toString());
 				if(l.completeItem(t)>0) {
@@ -135,6 +136,47 @@ public class TodoUtil {
 				
 			}
 		}
+	}
+	
+	public static void list_importantAll(TodoList l, int num) {
+		int count = 0;
+		for(TodoItem item : l.get_importantList(num)) {
+			System.out.println(item.toString());
+			count ++;
+		}
+		System.out.printf("총 %d개의 항목을 찾았습니다.\n",count);
+	}
+	
+	public static void importantItem(TodoList l, int number) {
+		for(TodoItem item : l.getList()) {
+			if(item.getId() == number) {
+				String new_title = item.getTitle();
+				String new_desc = item.getDesc();
+				String new_category = item.getCategory();
+				String new_due_date = item.getDue_date();
+				int is_cmp = item.get_is_completed();
+				TodoItem t = new TodoItem(new_title, new_desc, new_category, new_due_date);
+				t.set_is_completed(is_cmp);
+				t.set_is_important(1);
+				t.setId(number);
+				System.out.println(t.toString());
+				if(l.importantItem(t)>0) {
+					System.out.println("해당 항목이 중요 처리되었습니다.\n");
+				}
+			}
+		}
+	}
+	
+	public static void showAchievement(TodoList l) {
+		double allNum = l.getList().size();
+		double count = 0;
+		for(TodoItem item : l.getList()) {
+			if(item.get_is_completed() == 1) {
+				count ++;
+			}
+		}
+		double result = Math.round(count/allNum*100) * 10 / 10.00;
+		System.out.println("You are performed " + result + "% of the total list!");
 	}
 	
 }

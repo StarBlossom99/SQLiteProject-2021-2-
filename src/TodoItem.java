@@ -5,6 +5,7 @@ public class TodoItem {
 	private int id;
 	private String title;
 	private int is_completed;
+	private int is_important;
     private String desc;
     private String current_date;
     private String category;
@@ -21,6 +22,15 @@ public class TodoItem {
         SimpleDateFormat f = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
         this.current_date = f.format(new Date());
         this.is_completed = 0;
+        this.is_important = 0;
+    }
+    
+    public void set_is_important(int num) {
+    	this.is_important = num;
+    }
+    
+    public int get_is_important() {
+    	return is_important;
     }
     
     public void setId(int id) {
@@ -81,10 +91,21 @@ public class TodoItem {
     
     public String toString() {
     	if(this.is_completed == 0) {
-    		return id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date;
+    		if(this.is_important == 0) {
+    			return id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date;
+    		}
+    		else {
+    			return "\u001B[33m" + id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date + "\u001B[0m";
+    		}
     	}
     	else {
-    		return id + " [" + category + "] " + title + " [V] " + " - " + desc + " - " + due_date + " - " + current_date;
+    		if(this.is_important == 0) {
+    			return id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date;
+    		}
+    		else {
+    			return "\u001B[33m" + id + " [" + category + "] " + title + " [V] " + " - " + desc + " - " + due_date + " - " + current_date + "\u001B[0m";
+    		}
+    		
     	}
     }
 }

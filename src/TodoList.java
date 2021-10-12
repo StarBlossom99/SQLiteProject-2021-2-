@@ -33,11 +33,13 @@ public class TodoList {
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
 				int is_completed = rs.getInt("is_completed");
+				int is_important = rs.getInt("is_important");
 				
 				TodoItem t = new TodoItem(title, description, category, due_date);
 				t.setId(id);
 				t.setCurrent_date(current_date);
 				t.set_is_completed(is_completed);
+				t.set_is_important(is_important);
 				list.add(t);
 			}
 			stmt.close();
@@ -65,11 +67,12 @@ public class TodoList {
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
 				int is_completed = rs.getInt("is_completed");
-				
+				int is_important = rs.getInt("is_important");				
 				TodoItem t = new TodoItem(title, description, category, due_date);
 				t.setId(id);
 				t.setCurrent_date(current_date);
 				t.set_is_completed(is_completed);
+				t.set_is_important(is_important);
 				list.add(t);
 			}
 		} catch (SQLException e) {
@@ -95,10 +98,12 @@ public class TodoList {
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
 				int is_completed = rs.getInt("is_completed");
+				int is_important = rs.getInt("is_important");
 				TodoItem t = new TodoItem(title, description, category, due_date);
 				t.setId(id);
 				t.setCurrent_date(current_date);
 				t.set_is_completed(is_completed);
+				t.set_is_important(is_important);
 				list.add(t);
 			}
 		} catch (SQLException e) {
@@ -125,10 +130,12 @@ public class TodoList {
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
 				int is_completed = rs.getInt("is_completed");
+				int is_important = rs.getInt("is_important");
 				TodoItem t = new TodoItem(title, description, category, due_date);
 				t.setId(id);
 				t.setCurrent_date(current_date);
 				t.set_is_completed(is_completed);
+				t.set_is_important(is_important);
 				list.add(t);
 			}
 		} catch (SQLException e) {
@@ -137,7 +144,7 @@ public class TodoList {
 		return list;
 	}
 	
-	public ArrayList<TodoItem> getList(int num){
+	public ArrayList<TodoItem> get_compList(int num){
 		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
 		PreparedStatement pstmt;
 		try {
@@ -154,10 +161,43 @@ public class TodoList {
 				String due_date = rs.getString("due_date");
 				String current_date = rs.getString("current_date");
 				int is_completed = rs.getInt("is_completed");
+				int is_important = rs.getInt("is_important");
 				TodoItem t = new TodoItem(title, description, category, due_date);
 				t.setId(id);
 				t.setCurrent_date(current_date);
 				t.set_is_completed(is_completed);
+				t.set_is_important(is_important);
+				list.add(t);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<TodoItem> get_importantList(int num){
+		ArrayList<TodoItem> list = new ArrayList<TodoItem>();
+		PreparedStatement pstmt;
+		try {
+			String sql = "SELECT * FROM list WHERE is_important = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String category = rs.getString("category");
+				String title = rs.getString("title");
+				String description = rs.getString("memo");
+				String due_date = rs.getString("due_date");
+				String current_date = rs.getString("current_date");
+				int is_completed = rs.getInt("is_completed");
+				int is_important = rs.getInt("is_important");
+				TodoItem t = new TodoItem(title, description, category, due_date);
+				t.setId(id);
+				t.setCurrent_date(current_date);
+				t.set_is_completed(is_completed);
+				t.set_is_important(is_important);
 				list.add(t);
 			}
 		} catch (SQLException e) {
@@ -217,7 +257,7 @@ public class TodoList {
 	}
 	
 	public int updateItem(TodoItem t) {
-		String sql = "update list set title=?, memo=?, category=?, current_date=?, due_date=?, is_completed=?" + " where id = ?;";
+		String sql = "update list set title=?, memo=?, category=?, current_date=?, due_date=?, is_completed=?, is_important=?" + " where id = ?;";
 		PreparedStatement pstmt;
 		int count = 0;
 		try {
@@ -228,7 +268,8 @@ public class TodoList {
 			pstmt.setString(4, t.getCurrent_date());
 			pstmt.setString(5, t.getDue_date());
 			pstmt.setInt(6, t.get_is_completed());
-			pstmt.setInt(7, t.getId());
+			pstmt.setInt(7, t.get_is_important());
+			pstmt.setInt(8, t.getId());
 			count = pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -238,7 +279,7 @@ public class TodoList {
 	}
 	
 	public int addItem(TodoItem t) {
-		String sql = "insert into list (title, memo, category, current_date, due_date, is_completed)" + " values (?,?,?,?,?,?);";
+		String sql = "insert into list (title, memo, category, current_date, due_date, is_completed, is_important)" + " values (?,?,?,?,?,?,?);";
 		PreparedStatement pstmt;
 		int count = 0;
 		try {
@@ -249,6 +290,7 @@ public class TodoList {
 			pstmt.setString(4, t.getCurrent_date());
 			pstmt.setString(5, t.getDue_date());
 			pstmt.setInt(6, t.get_is_completed());
+			pstmt.setInt(7, t.get_is_important());
 			count = pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -270,6 +312,28 @@ public class TodoList {
 			pstmt.setString(5, t.getDue_date());
 			pstmt.setInt(6, t.get_is_completed());
 			pstmt.setInt(7, t.getId());
+			count = pstmt.executeUpdate();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	
+	public int importantItem(TodoItem t) {
+		String sql = "update list set title=?, memo=?, category=?, current_date=?, due_date=?, is_completed=?, is_important=?" + " where id = ?;";
+		PreparedStatement pstmt;
+		int count = 0;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, t.getTitle());
+			pstmt.setString(2, t.getDesc());
+			pstmt.setString(3, t.getCategory());
+			pstmt.setString(4, t.getCurrent_date());
+			pstmt.setString(5, t.getDue_date());
+			pstmt.setInt(6, t.get_is_completed());
+			pstmt.setInt(7, t.get_is_important());
+			pstmt.setInt(8, t.getId());
 			count = pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {

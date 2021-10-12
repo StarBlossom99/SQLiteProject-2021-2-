@@ -10,11 +10,12 @@ public class TodoMain {
 		
 		  Scanner sc = new Scanner(System.in);
 	      TodoList l = new TodoList();
-
+	      
 	      boolean isList = false;
 	      boolean quit = false;
 	      Menu.displaymenu();
 	      do {
+	    	 int number = 0;
 	    	 System.out.print("실행할 명령을 입력하세요  >");
 	         isList = false;
 	         String choice = sc.next();
@@ -38,13 +39,18 @@ public class TodoMain {
 	            break;
 	            
 	         case "ls_comp":
-	        	TodoUtil.listAll(l,1);
+	        	TodoUtil.list_compAll(l,1);
 	        	break;
 	         
 	         case "comp":
-	        	int number = sc.nextInt();
+	        	number = sc.nextInt();
 	        	TodoUtil.completeItem(l, number);
 	        	break;
+	        
+	         case "imp":
+		        number = sc.nextInt();
+		        TodoUtil.importantItem(l, number);
+		        break;
 	        	
 	         case "ls_name":
 	        	System.out.println("제목순으로 정렬하였습니다.");
@@ -69,6 +75,10 @@ public class TodoMain {
 	         case "help":
 	        	Menu.prompt();
 	        	break;
+	        	
+	         case "achi":
+	         	TodoUtil.showAchievement(l);
+	         	break;
 	         
 	         case "find":
 	        	String keyword = sc.nextLine().trim();
@@ -85,6 +95,28 @@ public class TodoMain {
 			    break;
 			       	
 	         case "exit":
+	        	Gson gson = new Gson();
+	   	        String jsonstr = gson.toJson(l.getList());
+	   	        String output_filename;
+	        	String store_check;
+	        	System.out.println("파일을 새로 만들어 저장하시겠습니까? (Y/N)");
+	        	store_check = sc.next();
+	        	if(store_check.equalsIgnoreCase("Y")) {
+	        		System.out.println("새로 저장할 파일의 파일명을 입력하세요 : ");
+	      	      	output_filename = sc.next();
+	        	}
+	        	else {
+	        		output_filename = "todolist_21800777.txt";
+	        	}
+	        	try {
+	  	    	  FileWriter writer = new FileWriter(output_filename);
+	  	    	  writer.write(jsonstr);
+	  	    	  writer.close();
+	  	    	  System.out.println("Json을 통해 파일에 저장되었습니다!");
+		  	    } catch (IOException e) {
+		  	    	  e.printStackTrace();
+		  	    }
+	        	
 	        	System.out.println("시스템을 종료합니다.");
 	            quit = true;
 	            break;
@@ -96,17 +128,5 @@ public class TodoMain {
 	         
 	         if(isList) TodoUtil.listAll(l);
 	      } while (!quit);
-	      
-	      Gson gson = new Gson();
-	      String jsonstr = gson.toJson(l.getList());
-	      
-	      try {
-	    	  FileWriter writer = new FileWriter("21800777.txt");
-	    	  writer.write(jsonstr);
-	    	  writer.close();
-	    	  System.out.println("Json을 통해 파일에 저장되었습니다!");
-	      } catch (IOException e) {
-	    	  e.printStackTrace();
-	      }
 	}
 }
