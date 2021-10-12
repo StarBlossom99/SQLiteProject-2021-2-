@@ -257,7 +257,8 @@ public class TodoList {
 	}
 	
 	public int updateItem(TodoItem t) {
-		String sql = "update list set title=?, memo=?, category=?, current_date=?, due_date=?, is_completed=?, is_important=?" + " where id = ?;";
+		String sql = "update list set title=?, memo=?, category=?, current_date=?,"
+				+ " due_date=?, is_completed=?, is_important=?" + " where id = ?;";
 		PreparedStatement pstmt;
 		int count = 0;
 		try {
@@ -279,7 +280,8 @@ public class TodoList {
 	}
 	
 	public int addItem(TodoItem t) {
-		String sql = "insert into list (title, memo, category, current_date, due_date, is_completed, is_important)" + " values (?,?,?,?,?,?,?);";
+		String sql = "insert into list (title, memo, category, current_date, due_date,"
+				+ " is_completed, is_important)" + " values (?,?,?,?,?,?,?);";
 		PreparedStatement pstmt;
 		int count = 0;
 		try {

@@ -51,6 +51,10 @@ public class TodoMain {
 		        number = sc.nextInt();
 		        TodoUtil.importantItem(l, number);
 		        break;
+		        
+	         case "ls_imp":
+	        	TodoUtil.list_importantAll(l,1);
+		        break;
 	        	
 	         case "ls_name":
 	        	System.out.println("제목순으로 정렬하였습니다.");
@@ -112,7 +116,7 @@ public class TodoMain {
 	  	    	  FileWriter writer = new FileWriter(output_filename);
 	  	    	  writer.write(jsonstr);
 	  	    	  writer.close();
-	  	    	  System.out.println("Json을 통해 파일에 저장되었습니다!");
+	  	    	  System.out.println("Json 형식으로 파일(" + output_filename + ")에 저장되었습니다!");
 		  	    } catch (IOException e) {
 		  	    	  e.printStackTrace();
 		  	    }

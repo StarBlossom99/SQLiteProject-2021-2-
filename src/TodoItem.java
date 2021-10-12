@@ -92,18 +92,22 @@ public class TodoItem {
     public String toString() {
     	if(this.is_completed == 0) {
     		if(this.is_important == 0) {
-    			return id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date;
+    			return id + " [" + category + "] " + title + " - " 
+    		+ desc + " - " + due_date + " - " + current_date;
     		}
     		else {
-    			return "\u001B[33m" + id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date + "\u001B[0m";
+    			return "\u001B[33m" + id + " [" + category + "] " + title + " - "
+    		+ desc + " - " + due_date + " - " + current_date + "\u001B[0m";
     		}
     	}
     	else {
     		if(this.is_important == 0) {
-    			return id + " [" + category + "] " + title + " - " + desc + " - " + due_date + " - " + current_date;
+    			return id + " [" + category + "] " + title + " [V] " + " - "
+    		+ desc + " - " + due_date + " - " + current_date;
     		}
     		else {
-    			return "\u001B[33m" + id + " [" + category + "] " + title + " [V] " + " - " + desc + " - " + due_date + " - " + current_date + "\u001B[0m";
+    			return "\u001B[33m" + id + " [" + category + "] " + title + " [V] " + " - "
+    		+ desc + " - " + due_date + " - " + current_date + "\u001B[0m";
     		}
     		
     	}
